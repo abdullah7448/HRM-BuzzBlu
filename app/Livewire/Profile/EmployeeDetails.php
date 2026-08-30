@@ -16,16 +16,12 @@ class EmployeeDetails extends Component
     public $user;
     public $selectedMonth;
     
-    // Admin/HR Edit Properties
+    // Admin/HR Edit Properties (All in one)
     public $isEditModalOpen = false;
-    public $edit_department_id, $edit_designation_id, $edit_status;
+    public $edit_name, $edit_email, $edit_department_id, $edit_designation_id, $edit_status, $hr_new_password;
     public $departments = [], $designations = [];
 
-    // Personal Edit Properties (For the Employee)
-    public $isPersonalModalOpen = false;
-    public $edit_name, $edit_email;
-
-    // Password Change Properties
+    // Personal Password Change Properties (For Employee themselves)
     public $isPasswordModalOpen = false;
     public $current_password, $new_password, $new_password_confirmation;
 
@@ -38,62 +34,63 @@ class EmployeeDetails extends Component
         }])->findOrFail($targetId);
 
         $this->selectedMonth = Carbon::now()->format('Y-m');
-
-        // Load Admin/HR Edit Data
         $this->departments = Department::all();
-        $this->edit_department_id = $this->user->department_id;
-        $this->edit_designation_id = $this->user->designation_id;
-        $this->edit_status = $this->user->status;
-        if ($this->edit_department_id) {
-            $this->designations = Designation::where('department_id', $this->edit_department_id)->get();
-        }
-
-        // Load Personal Edit Data
-        $this->edit_name = $this->user->name;
-        $this->edit_email = $this->user->email;
     }
 
+    // Instantly loads designations when HR changes the department
     public function updatedEditDepartmentId($value)
     {
         $this->designations = Designation::where('department_id', $value)->get();
         $this->edit_designation_id = null;
     }
 
-    // Admin/HR Edit Methods
-    public function openEditModal() { $this->isEditModalOpen = true; }
-    public function closeEditModal() { $this->isEditModalOpen = false; }
-    public function updateProfile()
-    {
-        $this->user->update([
-            'department_id' => $this->edit_department_id,
-            'designation_id' => $this->edit_designation_id,
-            'status' => $this->edit_status,
-        ]);
-        $this->user->refresh();
-        $this->closeEditModal();
-        session()->flash('success', 'Company details updated successfully.');
+    // --- Admin/HR Edit Methods ---
+    public function openEditModal() 
+    { 
+        $this->edit_name = $this->user->name;
+        $this->edit_email = $this->user->email;
+        $this->edit_department_id = $this->user->department_id;
+        $this->edit_designation_id = $this->user->designation_id;
+        $this->edit_status = $this->user->status;
+        $this->hr_new_password = ''; // Leave blank by default
+
+        if ($this->edit_department_id) {
+            $this->designations = Designation::where('department_id', $this->edit_department_id)->get();
+        }
+
+        $this->isEditModalOpen = true; 
     }
 
-    // Personal Info Edit Methods
-    public function openPersonalModal() { $this->isPersonalModalOpen = true; }
-    public function closePersonalModal() { $this->isPersonalModalOpen = false; }
-    public function updatePersonalInfo()
+    public function closeEditModal() { $this->isEditModalOpen = false; }
+
+    public function updateProfile()
     {
         $this->validate([
             'edit_name' => 'required|string|max:255',
             'edit_email' => 'required|email|unique:users,email,' . $this->user->id,
+            'hr_new_password' => 'nullable|min:6', // Optional: Only validate if HR typed something
         ]);
 
-        $this->user->update([
+        $updateData = [
             'name' => $this->edit_name,
             'email' => $this->edit_email,
-        ]);
+            'department_id' => $this->edit_department_id,
+            'designation_id' => $this->edit_designation_id,
+            'status' => $this->edit_status,
+        ];
+
+        // If HR typed a new password, hash it and add it to the update array
+        if (!empty($this->hr_new_password)) {
+            $updateData['password'] = Hash::make($this->hr_new_password);
+        }
+
+        $this->user->update($updateData);
         $this->user->refresh();
-        $this->closePersonalModal();
-        session()->flash('success', 'Personal information updated successfully.');
+        $this->closeEditModal();
+        session()->flash('success', 'Employee full profile updated successfully.');
     }
 
-    // Password Change Methods
+    // --- Personal Password Change Methods ---
     public function openPasswordModal() { $this->isPasswordModalOpen = true; }
     public function closePasswordModal() 
     { 
@@ -107,11 +104,9 @@ class EmployeeDetails extends Component
             'new_password' => 'required|min:6|confirmed',
         ]);
 
-        $this->user->update([
-            'password' => Hash::make($this->new_password),
-        ]);
+        $this->user->update(['password' => Hash::make($this->new_password)]);
         $this->closePasswordModal();
-        session()->flash('success', 'Password changed successfully.');
+        session()->flash('success', 'Your password has been changed successfully.');
     }
 
     public function render()

@@ -17,15 +17,32 @@ Route::get('/dashboard', function () {
         return redirect()->route('department-head.dashboard');
     } elseif ($user->roles->contains('name', 'Employee')) {
         return redirect()->route('employee.dashboard');
+    } elseif ($user->roles->contains('name', 'Candidate')) {
+        return redirect()->route('candidate.dashboard');
     }
 
     abort(403, 'Unauthorized access.');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-//profile route 
+
+// Shared Routes for Authenticated Users (Profile & ATS)
 Route::middleware(['auth'])->group(function () {
+    
+    // Profile Route (Visible to everyone based on permissions)
     Route::get('/profile/employee/{userId?}', \App\Livewire\Profile\EmployeeDetails::class)->name('employee.profile');
+
+    // ATS Job Manager Route (Restricted to Super Admin and HR using Spatie middleware)
+    Route::get('/ats/jobs', \App\Livewire\Ats\JobManager::class)->middleware('role:Super Admin|HR')->name('ats.jobs');
+    
 });
+
+// Candidate Route
+Route::middleware(['auth', 'role:Candidate'])->group(function () {
+    Route::get('/candidate/dashboard', function () {
+        return view('dashboards.candidate');
+    })->name('candidate.dashboard');
+});
+
 // Protected Route Groups for each Role
 Route::middleware(['auth', 'role:Super Admin'])->group(function () {
     Route::get('/super-admin/dashboard', function () {

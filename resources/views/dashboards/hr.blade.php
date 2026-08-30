@@ -10,12 +10,19 @@
             
             <!-- Personal Web Punch for HR -->
             <livewire:employee.web-punch />
+            <livewire:employee.attendance-report />
 
             <!-- Administrative Controls: Company-wide Leave Approvals -->
             <livewire:hr.leave-approvals />
 
             <!-- Administrative Controls: Company-wide Employee Directory -->
             <livewire:hr.employee-list />
+
+            <!-- Add New Candidate ATS Pipeline -->
+            <livewire:ats.candidate-manager />
+
+            <!-- View Candidates Answers & Evaluate -->
+            <livewire:ats.application-evaluator />
 
             <!-- Personal Leave Requests for HR -->
             <livewire:employee.leave-request-form />

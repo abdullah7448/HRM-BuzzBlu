@@ -21,6 +21,9 @@
             <!-- Personal Leave Requests for the Head -->
             <livewire:employee.leave-request-form />
 
+            
+            <!-- View Candidates Answers & Evaluate -->
+            <livewire:ats.application-evaluator />
         </div>
     </div>
 </x-app-layout>

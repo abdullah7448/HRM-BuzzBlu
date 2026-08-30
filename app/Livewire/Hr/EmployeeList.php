@@ -61,9 +61,15 @@ class EmployeeList extends Component
     public function render()
     {
         return view('livewire.hr.employee-list', [
-            'employees' => User::with(['department', 'designation', 'roles'])->latest()->get(),
+            // UPDATE: Filter out Candidates, show only actual employees/HR/Admins
+            'employees' => User::with(['department', 'designation', 'roles'])
+                ->whereDoesntHave('roles', function($query) {
+                    $query->where('name', 'Candidate');
+                })
+                ->latest()
+                ->get(),
             'departments' => Department::all(),
-            'designations' => Designation::where('department_id', $this->department_id)->get(), // Dynamic designations based on selected department
+            'designations' => Designation::where('department_id', $this->department_id)->get(),
             'roles' => Role::all(),
         ]);
     }

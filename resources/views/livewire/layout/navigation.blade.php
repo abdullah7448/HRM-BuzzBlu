@@ -55,6 +55,11 @@ new class extends Component
                         </x-nav-link>
                     @endrole
                 </div>
+                @hasanyrole('Super Admin|HR')
+                <x-nav-link :href="route('ats.jobs')" :active="request()->routeIs('ats.jobs')">
+                    {{ __('Recruitment (ATS)') }}
+                </x-nav-link>
+                @endhasanyrole
             </div>
 
             <!-- Settings Dropdown -->
