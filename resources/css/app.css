@@ -1,3 +1,411 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ==================== PREMIUM STYLING ==================== */
+
+@layer base {
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-bold text-gray-900;
+    }
+
+    p {
+        @apply text-gray-700;
+    }
+
+    /* Button Base Styles */
+    button {
+        @apply font-medium transition-all duration-200;
+    }
+}
+
+@layer components {
+    /* ========== CARDS ========== */
+    .card {
+        @apply bg-white rounded-xl shadow-card p-6 transition-all duration-300 hover:shadow-card-lg border border-gray-100;
+    }
+
+    .card-header {
+        @apply text-lg font-bold text-gray-900 mb-6 flex items-center gap-2;
+    }
+
+    .card-accent {
+        @apply w-1 h-6 bg-primary-600 rounded;
+    }
+
+    /* ========== TABS STYLING ========== */
+    
+    /* Main Tab Navigation */
+    .tab-nav {
+        @apply bg-white rounded-xl shadow-card border border-gray-100 overflow-hidden;
+    }
+
+    .tab-nav-container {
+        @apply flex flex-wrap gap-1 p-3 overflow-x-auto;
+    }
+
+    .tab-btn {
+        @apply px-5 py-3 font-semibold text-sm rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap border-2 border-transparent;
+    }
+
+    .tab-btn-active {
+        @apply bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg border-2 border-primary-600 scale-105;
+    }
+
+    .tab-btn-inactive {
+        @apply bg-gray-50 text-gray-700 hover:bg-gray-100 border-2 border-gray-200 hover:border-gray-300;
+    }
+
+    /* Sub Tab Navigation */
+    .sub-tab-nav {
+        @apply flex flex-wrap gap-1 mb-4 border-b border-gray-200 pb-2;
+    }
+
+    .sub-tab-btn {
+        @apply px-4 py-2 font-semibold text-sm rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap;
+    }
+
+    .sub-tab-btn-active {
+        @apply bg-primary-100 text-primary-700 border-b-2 border-primary-600;
+    }
+
+    .sub-tab-btn-inactive {
+        @apply text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-b-2 border-transparent;
+    }
+
+    /* ========== BUTTONS ========== */
+    .btn {
+        @apply px-6 py-3 font-semibold text-sm rounded-lg transition-all duration-200 flex items-center justify-center gap-2 border border-transparent;
+    }
+
+    .btn-primary {
+        @apply bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:shadow-lg active:scale-95;
+    }
+
+    .btn-secondary {
+        @apply bg-secondary-600 text-white hover:bg-secondary-700 active:scale-95;
+    }
+
+    .btn-success {
+        @apply bg-success-600 text-white hover:bg-success-700 active:scale-95;
+    }
+
+    .btn-danger {
+        @apply bg-danger-600 text-white hover:bg-danger-700 active:scale-95;
+    }
+
+    .btn-outline {
+        @apply bg-white text-gray-700 border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50;
+    }
+
+    /* ========== STAT CARD ========== */
+    .stat-card {
+        @apply bg-white rounded-xl shadow-card p-6 border-t-4 transition-all duration-300 hover:shadow-card-lg border border-gray-100;
+    }
+
+    .stat-card-primary {
+        @apply border-t-primary-600;
+    }
+
+    .stat-card-success {
+        @apply border-t-success-600;
+    }
+
+    .stat-card-warning {
+        @apply border-t-warning-600;
+    }
+
+    .stat-card-secondary {
+        @apply border-t-secondary-600;
+    }
+
+    .stat-icon {
+        @apply p-3 rounded-lg inline-flex;
+    }
+
+    .stat-icon-primary {
+        @apply bg-primary-100 text-primary-600;
+    }
+
+    .stat-icon-success {
+        @apply bg-success-100 text-success-600;
+    }
+
+    .stat-icon-warning {
+        @apply bg-warning-100 text-warning-600;
+    }
+
+    .stat-icon-secondary {
+        @apply bg-secondary-100 text-secondary-600;
+    }
+
+    .stat-value {
+        @apply text-3xl font-bold text-gray-900;
+    }
+
+    .stat-label {
+        @apply text-gray-600 text-sm font-semibold uppercase tracking-wide;
+    }
+
+    /* ========== FORMS ========== */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="date"],
+    input[type="time"],
+    textarea,
+    select {
+        @apply w-full px-4 py-2 text-gray-900 bg-white border-2 border-gray-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 placeholder-gray-400;
+    }
+
+    textarea {
+        @apply resize-vertical;
+    }
+
+    label {
+        @apply text-gray-900 font-semibold text-sm mb-2 block;
+    }
+
+    /* ========== ALERTS ========== */
+    .alert {
+        @apply p-4 rounded-lg border-l-4 font-medium;
+    }
+
+    .alert-success {
+        @apply bg-success-50 border-l-success-600 text-success-800;
+    }
+
+    .alert-danger {
+        @apply bg-danger-50 border-l-danger-600 text-danger-800;
+    }
+
+    .alert-warning {
+        @apply bg-warning-50 border-l-warning-600 text-warning-800;
+    }
+
+    .alert-info {
+        @apply bg-primary-50 border-l-primary-600 text-primary-800;
+    }
+
+    /* ========== BADGES ========== */
+    .badge {
+        @apply px-3 py-1 rounded-full text-xs font-semibold inline-block;
+    }
+
+    .badge-primary {
+        @apply bg-primary-100 text-primary-700;
+    }
+
+    .badge-success {
+        @apply bg-success-100 text-success-700;
+    }
+
+    .badge-warning {
+        @apply bg-warning-100 text-warning-700;
+    }
+
+    .badge-danger {
+        @apply bg-danger-100 text-danger-700;
+    }
+
+    /* ========== TABLES ========== */
+    .table-container {
+        @apply overflow-x-auto;
+    }
+
+    table {
+        @apply w-full;
+    }
+
+    thead {
+        @apply bg-gray-50 border-b-2 border-gray-200;
+    }
+
+    th {
+        @apply px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wide;
+    }
+
+    tbody tr {
+        @apply border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200;
+    }
+
+    td {
+        @apply px-4 py-3 text-gray-700;
+    }
+
+    /* ========== SECTION HEADER ========== */
+    .section-header {
+        @apply text-2xl font-bold text-gray-900 mb-6 pb-4 border-b-2 border-gray-100;
+    }
+}
+
+@layer utilities {
+    /* ========== GRADIENTS ========== */
+    .gradient-primary {
+        @apply bg-gradient-to-r from-primary-600 to-primary-700;
+    }
+
+    .gradient-secondary {
+        @apply bg-gradient-to-r from-secondary-600 to-secondary-700;
+    }
+
+    .gradient-success {
+        @apply bg-gradient-to-r from-success-600 to-success-700;
+    }
+
+    /* ========== TRANSITIONS ========== */
+    .transition-smooth {
+        @apply transition-all duration-300 ease-in-out;
+    }
+
+    /* ========== TEXT UTILITIES ========== */
+    .text-truncate {
+        @apply truncate;
+    }
+
+    .text-clamp {
+        @apply line-clamp-2;
+    }
+
+    /* ========== SPACING ========== */
+    .gap-xs {
+        @apply gap-1;
+    }
+
+    .gap-sm {
+        @apply gap-2;
+    }
+
+    .gap-md {
+        @apply gap-4;
+    }
+
+    .gap-lg {
+        @apply gap-6;
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .animate-slide-in {
+        animation: slideInDown 0.3s ease-out;
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.3s ease-out;
+    }
+}
+
+/* ==================== FIXES & IMPROVEMENTS ==================== */
+
+/* Remove default focus rings and add custom */
+*:focus {
+    @apply outline-none;
+}
+
+/* Text Contrast Fix - CRITICAL */
+body {
+    @apply text-gray-900 bg-gray-50;
+    color: #111827; /* Explicit dark gray for perfect contrast */
+}
+
+a {
+    @apply text-primary-600 hover:text-primary-700 font-medium;
+}
+
+/* Icon Contrast Fix */
+svg {
+    @apply text-current; /* Ensure SVG inherits text color */
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-primary-600 rounded-full hover:bg-primary-700;
+}
+
+/* Selection Styling */
+::selection {
+    @apply bg-primary-600 text-white;
+}
+
+::-moz-selection {
+    @apply bg-primary-600 text-white;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 1024px) {
+    .tab-btn {
+        @apply px-4 py-2 text-xs;
+    }
+
+    .stat-value {
+        @apply text-2xl;
+    }
+}
+
+@media (max-width: 768px) {
+    .card {
+        @apply p-4;
+    }
+
+    .card-header {
+        @apply text-base;
+    }
+
+    .btn {
+        @apply px-4 py-2 text-sm;
+    }
+
+    .tab-btn {
+        @apply px-3 py-2 text-xs;
+    }
+
+    .stat-card {
+        @apply p-4;
+    }
+
+    .stat-value {
+        @apply text-2xl;
+    }
+
+    th, td {
+        @apply px-2 py-2 text-sm;
+    }
+
+    h1 {
+        @apply text-2xl;
+    }
+
+    h2 {
+        @apply text-xl;
+    }
+}
