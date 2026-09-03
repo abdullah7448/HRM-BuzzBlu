@@ -35,10 +35,8 @@ class LeaveRequestForm extends Component
         $this->successMessage = 'Leave request submitted successfully and is pending Department Head approval.';
     }
 
-    public function render()
+   public function render()
     {
-        return view('livewire.employee.leave-request-form', [
-            'leaveHistory' => LeaveRequest::where('user_id', Auth::id())->latest()->get()
-        ]);
+        return view('livewire.employee.leave-request-form');
     }
 }

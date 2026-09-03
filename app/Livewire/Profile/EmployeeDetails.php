@@ -18,6 +18,7 @@ class EmployeeDetails extends Component
     
     // Admin/HR Edit Properties (All in one)
     public $isEditModalOpen = false;
+    public $edit_employee_id, $edit_phone; // নতুন ফিল্ড যুক্ত করা হলো
     public $edit_name, $edit_email, $edit_department_id, $edit_designation_id, $edit_status, $hr_new_password;
     public $departments = [], $designations = [];
 
@@ -47,6 +48,9 @@ class EmployeeDetails extends Component
     // --- Admin/HR Edit Methods ---
     public function openEditModal() 
     { 
+        // ইউজারের বর্তমান ডেটাগুলো প্রোপার্টিতে সেট করা হচ্ছে
+        $this->edit_employee_id = $this->user->employee_id;
+        $this->edit_phone = $this->user->phone;
         $this->edit_name = $this->user->name;
         $this->edit_email = $this->user->email;
         $this->edit_department_id = $this->user->department_id;
@@ -61,22 +65,31 @@ class EmployeeDetails extends Component
         $this->isEditModalOpen = true; 
     }
 
-    public function closeEditModal() { $this->isEditModalOpen = false; }
+    public function closeEditModal() 
+    { 
+        $this->isEditModalOpen = false; 
+    }
 
     public function updateProfile()
     {
+        // নতুন ফিল্ডসহ ভ্যালিডেশন
         $this->validate([
-            'edit_name' => 'required|string|max:255',
-            'edit_email' => 'required|email|unique:users,email,' . $this->user->id,
-            'hr_new_password' => 'nullable|min:6', // Optional: Only validate if HR typed something
+            'edit_employee_id' => 'nullable|string|max:255|unique:users,employee_id,' . $this->user->id,
+            'edit_phone'       => 'nullable|string|max:20',
+            'edit_name'        => 'required|string|max:255',
+            'edit_email'       => 'required|email|unique:users,email,' . $this->user->id,
+            'hr_new_password'  => 'nullable|min:6', // Optional: Only validate if HR typed something
         ]);
 
+        // নতুন ফিল্ডগুলো আপডেটের জন্য অ্যারেতে দেওয়া হলো
         $updateData = [
-            'name' => $this->edit_name,
-            'email' => $this->edit_email,
-            'department_id' => $this->edit_department_id,
+            'employee_id'    => $this->edit_employee_id,
+            'phone'          => $this->edit_phone,
+            'name'           => $this->edit_name,
+            'email'          => $this->edit_email,
+            'department_id'  => $this->edit_department_id,
             'designation_id' => $this->edit_designation_id,
-            'status' => $this->edit_status,
+            'status'         => $this->edit_status,
         ];
 
         // If HR typed a new password, hash it and add it to the update array
@@ -92,11 +105,13 @@ class EmployeeDetails extends Component
 
     // --- Personal Password Change Methods ---
     public function openPasswordModal() { $this->isPasswordModalOpen = true; }
+    
     public function closePasswordModal() 
     { 
         $this->isPasswordModalOpen = false; 
         $this->reset(['current_password', 'new_password', 'new_password_confirmation']);
     }
+
     public function updatePassword()
     {
         $this->validate([

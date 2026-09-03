@@ -23,6 +23,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',          // যুক্ত করা হলো
+        'employee_id',    // যুক্ত করা হলো
+        'department_id',  // যুক্ত করা হলো
+        'designation_id', // যুক্ত করা হলো
+        'status',         // যুক্ত করা হলো
     ];
 
     /**
@@ -58,10 +63,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Designation::class);
     }
+    
     public function leaveRequests()
     {
         return $this->hasMany(LeaveRequest::class);
     }
 }
-
-

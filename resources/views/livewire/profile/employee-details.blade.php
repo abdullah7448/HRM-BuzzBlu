@@ -34,18 +34,20 @@
         <!-- Employee/Candidate Basic Details Card -->
         <div class="bg-white p-6 border border-gray-200 rounded-lg shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2">Personal Information</h3>
-                <p class="text-sm text-gray-600"><strong>Name:</strong> {{ $user->name }}</p>
-                <p class="text-sm text-gray-600"><strong>Email:</strong> {{ $user->email }}</p>
-                <p class="text-sm text-gray-600"><strong>System Role:</strong> {{ $user->getRoleNames()->first() ?? 'N/A' }}</p>
+                <h3 class="text-lg font-bold text-gray-900 mb-2 border-b pb-2">Personal Information</h3>
+                <p class="text-sm text-gray-600 mt-2"><strong>Employee ID:</strong> {{ $user->employee_id ?? 'N/A' }}</p>
+                <p class="text-sm text-gray-600 mt-1"><strong>Name:</strong> {{ $user->name }}</p>
+                <p class="text-sm text-gray-600 mt-1"><strong>Email:</strong> {{ $user->email }}</p>
+                <p class="text-sm text-gray-600 mt-1"><strong>Phone:</strong> {{ $user->phone ?? 'N/A' }}</p>
             </div>
             <div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2">Company Information</h3>
-                <p class="text-sm text-gray-600"><strong>Department:</strong> {{ $user->department->name ?? 'Unassigned' }}</p>
-                <p class="text-sm text-gray-600"><strong>Designation:</strong> {{ $user->designation->name ?? 'Unassigned' }}</p>
-                <p class="text-sm text-gray-600"><strong>Status:</strong> 
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                        {{ ucfirst($user->status) }}
+                <h3 class="text-lg font-bold text-gray-900 mb-2 border-b pb-2">Company Information</h3>
+                <p class="text-sm text-gray-600 mt-2"><strong>System Role:</strong> {{ $user->getRoleNames()->first() ?? 'N/A' }}</p>
+                <p class="text-sm text-gray-600 mt-1"><strong>Department:</strong> {{ $user->department->name ?? 'Unassigned' }}</p>
+                <p class="text-sm text-gray-600 mt-1"><strong>Designation:</strong> {{ $user->designation->name ?? 'Unassigned' }}</p>
+                <p class="text-sm text-gray-600 mt-1 flex items-center gap-2"><strong>Status:</strong> 
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->status === 'active' ? 'bg-green-100 text-green-800' : ($user->status === 'on_leave' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
+                        {{ ucfirst(str_replace('_', ' ', $user->status)) }}
                     </span>
                 </p>
             </div>
@@ -188,6 +190,21 @@
                 <h3 class="text-lg font-medium text-gray-900 mb-4 border-b pb-2">Edit Details: {{ $user->name }}</h3>
                 
                 <form wire:submit.prevent="updateProfile" class="space-y-4">
+                    
+                    <!-- Emp ID and Phone -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Employee ID</label>
+                            <input type="text" wire:model="edit_employee_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                            @error('edit_employee_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Phone Number</label>
+                            <input type="text" wire:model="edit_phone" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                            @error('edit_phone') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+
                     <!-- Name and Email -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -281,4 +298,4 @@
         @endif
 
     </div>
-</div>
+</div> 
