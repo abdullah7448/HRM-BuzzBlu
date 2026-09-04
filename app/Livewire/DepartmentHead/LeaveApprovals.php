@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Livewire\DepartmentHead;
 
 use Livewire\Component;
@@ -26,12 +25,13 @@ class LeaveApprovals extends Component
     {
         $headDepartmentId = Auth::user()->department_id;
 
-        // Fetch requests only for employees in the Head's department
+        // শুধু ডিপার্টমেন্টের পেন্ডিং রিকোয়েস্টগুলো আনা হচ্ছে (সাথে ইউজারের ডেজিগনেশন)
         $pendingRequests = LeaveRequest::where('status', 'pending_head_approval')
             ->whereHas('user', function ($query) use ($headDepartmentId) {
                 $query->where('department_id', $headDepartmentId);
             })
-            ->with('user')
+            ->with(['user', 'user.designation'])
+            ->latest()
             ->get();
 
         return view('livewire.department-head.leave-approvals', [

@@ -27,8 +27,8 @@
                                 {{ \Carbon\Carbon::parse($leave->end_date)->format('M d, Y') }}
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-sm text-gray-500">
-                            {{ Str::limit($leave->reason, 40) }}
+                        <td class="px-6 py-4 text-sm text-gray-500 break-words max-w-xs">
+                            {{ Str::limit($leave->reason, 50) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                             <button wire:click="approve({{ $leave->id }})" class="inline-flex items-center px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition">

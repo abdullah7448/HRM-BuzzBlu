@@ -71,20 +71,8 @@
 
                 <!-- ATTENDANCE TAB -->
                 <div x-show="activeTab === 'attendance'" x-transition class="space-y-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="bg-white rounded-xl shadow-card p-6 border-t-4 border-success-500">
-                            <p class="text-gray-600 text-sm font-semibold uppercase tracking-wide">Present Today</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">24</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-card p-6 border-t-4 border-warning-500">
-                            <p class="text-gray-600 text-sm font-semibold uppercase tracking-wide">Absent</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">2</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-card p-6 border-t-4 border-primary-500">
-                            <p class="text-gray-600 text-sm font-semibold uppercase tracking-wide">Total Team</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">26</p>
-                        </div>
-                    </div>
+                   
+                    <livewire:department-head.attendance-stats />
 
                     <div class="bg-white rounded-xl shadow-card p-6">
                         <h3 class="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
@@ -105,17 +93,7 @@
 
                 <!-- LEAVE APPROVALS TAB -->
                 <div x-show="activeTab === 'leave'" x-transition class="space-y-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="bg-white rounded-xl shadow-card p-6 border-t-4 border-warning-500">
-                            <p class="text-gray-600 text-sm font-semibold uppercase tracking-wide">Pending Requests</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">5</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-card p-6 border-t-4 border-success-500">
-                            <p class="text-gray-600 text-sm font-semibold uppercase tracking-wide">Approved</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">12</p>
-                        </div>
-                    </div>
-
+                  
                     <div class="bg-white rounded-xl shadow-card p-6">
                         <h3 class="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
                             <span class="w-1 h-6 bg-primary-600 rounded"></span>
