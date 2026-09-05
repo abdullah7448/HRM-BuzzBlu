@@ -34,18 +34,18 @@ class AttendanceStats extends Component
         $onLeaveUsers = $allUsers->whereIn('id', $onLeaveUserIds);
 
         // ২. আজকের অ্যাটেনডেন্স/পাঞ্চ ডেটা
-        $attendances = Attendance::whereDate('created_at', $today)->get()->groupBy('user_id');
+        $attendances = Attendance::whereDate('date', $today)->get()->groupBy('user_id');
 
         $presentUsers = collect();
         $lateUsers = collect();
 
         foreach ($attendances as $userId => $userAttendances) {
-            $firstPunch = $userAttendances->sortBy('created_at')->first();
+            $firstPunch = $userAttendances->sortBy('punch_in')->first();
             $user = $allUsers->firstWhere('id', $userId);
             
             if ($user) {
                 // পাঞ্চ টাইম কি ৯:১০ এর পরে?
-                $punchTime = Carbon::parse($firstPunch->created_at)->format('H:i:s');
+                $punchTime = Carbon::parse($firstPunch->punch_in)->format('H:i:s');
                 if ($punchTime > $lateThreshold) {
                     $lateUsers->push($user);
                 } else {

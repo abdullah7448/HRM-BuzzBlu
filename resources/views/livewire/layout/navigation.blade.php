@@ -16,19 +16,65 @@ new class extends Component
     }
 }; ?>
 
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" wire:navigate>
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
-                    </a>
-                </div>
+<div x-data="{ open: false }">
+<nav :class="{ 'is-mobile-open': open }" class="app-sidebar">
+    <div class="sidebar-brand">
+        <a href="{{ route('dashboard') }}" wire:navigate class="brand-mark">
+            <span class="brand-symbol">H</span>
+            <span><strong>HUMANLY</strong><small>PEOPLE OS</small></span>
+        </a>
+        <button @click="open = !open" class="sidebar-close sm:hidden" aria-label="Toggle navigation">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+    </div>
 
-                <!-- Navigation Links -->
+    <div class="sidebar-content">
+        <p class="sidebar-label">Workspace</p>
+        <div class="sidebar-links">
+            <a href="{{ route('dashboard') }}" wire:navigate class="sidebar-link {{ request()->routeIs('dashboard') ? 'is-active' : '' }}">
+                <span class="sidebar-icon">⌂</span><span>Overview</span>
+            </a>
+            @role('Super Admin')
+                <a href="{{ route('super-admin.dashboard') }}" wire:navigate class="sidebar-link {{ request()->routeIs('super-admin.dashboard') ? 'is-active' : '' }}"><span class="sidebar-icon">◆</span><span>Admin Panel</span></a>
+            @endrole
+            @role('HR')
+                <a href="{{ route('hr.dashboard') }}" wire:navigate class="sidebar-link {{ request()->routeIs('hr.dashboard') ? 'is-active' : '' }}"><span class="sidebar-icon">◎</span><span>HR Overview</span><span class="sidebar-badge">4</span></a>
+            @endrole
+            @role('Department Head')
+                <a href="{{ route('department-head.dashboard') }}" wire:navigate class="sidebar-link {{ request()->routeIs('department-head.dashboard') ? 'is-active' : '' }}"><span class="sidebar-icon">▦</span><span>Department</span></a>
+            @endrole
+            @role('Employee')
+                <a href="{{ route('employee.dashboard') }}" wire:navigate class="sidebar-link {{ request()->routeIs('employee.dashboard') ? 'is-active' : '' }}"><span class="sidebar-icon">◌</span><span>My Workspace</span></a>
+            @endrole
+            @hasanyrole('Super Admin|HR')
+                <a href="{{ route('ats.jobs') }}" wire:navigate class="sidebar-link {{ request()->routeIs('ats.jobs') ? 'is-active' : '' }}"><span class="sidebar-icon">↗</span><span>Recruitment</span></a>
+            @endhasanyrole
+        </div>
+
+        <p class="sidebar-label sidebar-label-spaced">Manage</p>
+        <div class="sidebar-quick-note">
+            <span class="sidebar-quick-icon">✦</span>
+            <div><strong>People pulse</strong><small>Everything looks on track</small></div>
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        <a href="{{ route('profile.edit') }}" wire:navigate class="sidebar-profile">
+            <span class="avatar-initial">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+            <span class="min-w-0"><strong class="truncate block">{{ auth()->user()->name }}</strong><small class="truncate block">{{ auth()->user()->email }}</small></span>
+            <span class="text-cyan-300">•••</span>
+        </a>
+        <button wire:click="logout" class="sidebar-logout"><span>↪</span> Sign out</button>
+    </div>
+</nav>
+
+<div class="mobile-topbar sm:hidden">
+    <a href="{{ route('dashboard') }}" wire:navigate class="brand-mark"><span class="brand-symbol">H</span><strong>HUMANLY</strong></a>
+    <button @click="open = !open" class="mobile-menu-button" aria-label="Toggle navigation"><svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg></button>
+</div>
+
+{{-- Keep the existing role-aware links in the desktop shell above. --}}
+{{--
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <!-- Dynamic Navigation Links -->
                     @role('Super Admin')
@@ -128,4 +174,5 @@ new class extends Component
             </div>
         </div>
     </div>
-</nav>
+</nav> --}}
+</div>

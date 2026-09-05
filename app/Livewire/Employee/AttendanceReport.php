@@ -16,11 +16,19 @@ class AttendanceReport extends Component
         $this->selectedMonth = Carbon::now()->format('Y-m');
     }
 
+    public function updatedSelectedMonth($value): void
+    {
+        if (! preg_match('/^\d{4}-(0[1-9]|1[0-2])$/', (string) $value)) {
+            $this->selectedMonth = Carbon::now()->format('Y-m');
+        }
+    }
+
     public function render()
     {
-        $year = Carbon::parse($this->selectedMonth)->year;
-        $month = Carbon::parse($this->selectedMonth)->month;
-        $daysInMonth = Carbon::parse($this->selectedMonth)->daysInMonth;
+        $selectedDate = Carbon::createFromFormat('!Y-m', $this->selectedMonth);
+        $year = $selectedDate->year;
+        $month = $selectedDate->month;
+        $daysInMonth = $selectedDate->daysInMonth;
 
         $attendances = Attendance::where('user_id', Auth::id())
             ->whereYear('date', $year)

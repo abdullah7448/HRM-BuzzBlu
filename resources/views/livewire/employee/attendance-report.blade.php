@@ -5,7 +5,7 @@
         <!-- Month Filter -->
         <div class="flex items-center space-x-2">
             <label class="text-sm text-indigo-700 font-medium">Select Month:</label>
-            <input type="month" wire:model.live="selectedMonth" class="border-gray-300 rounded-md shadow-sm text-sm">
+            <input type="month" wire:model.live.debounce.150ms="selectedMonth" class="border-gray-300 rounded-md shadow-sm text-sm" aria-label="Select attendance month">
         </div>
     </div>
 

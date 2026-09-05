@@ -258,8 +258,4 @@
         </div>
     </div>
 
-    <!-- Livewire 3 automatically injects Alpine, but keeping this as a fallback if you need it globally -->
-    @push('scripts')
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @endpush
 </div>

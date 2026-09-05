@@ -21,13 +21,14 @@ Route::get('/dashboard', function () {
         return redirect()->route('candidate.dashboard');
     }
 
-    abort(403, 'Unauthorized access.');
+    return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
 // Shared Routes for Authenticated Users (Profile & ATS)
 Route::middleware(['auth'])->group(function () {
-    
+    Route::view('/profile', 'profile')->name('profile.edit');
+
     // Profile Route (Visible to everyone based on permissions)
     Route::get('/profile/employee/{userId?}', \App\Livewire\Profile\EmployeeDetails::class)->name('employee.profile');
 
