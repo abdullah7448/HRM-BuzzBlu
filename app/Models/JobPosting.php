@@ -8,6 +8,6 @@ class JobPosting extends Model
 
     public function department() { return $this->belongsTo(Department::class); }
     public function designation() { return $this->belongsTo(Designation::class); }
-    public function questions() { return $this->hasMany(JobQuestion::class)->orderBy('sort_order'); }
+    public function questions() { return $this->hasMany(JobQuestion::class); }
     public function applications() { return $this->hasMany(JobApplication::class); }
 }

@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\User;
 use App\Models\JobPosting;
 use App\Models\JobApplication;
+use App\Models\JobApplicationAnswer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -20,9 +21,17 @@ class CandidateManager extends Component
     public $position_filter = '';
     public $successMessage = '';
     public $generatedPassword = '';
+    public $candidates = [];
+    public $departments = [];
+    public $openJobs = [];
 
     public $isEditModalOpen = false;
     public $edit_candidate_id, $edit_name, $edit_email, $edit_phone, $edit_job_posting_id, $hr_new_password;
+    public $isAnswerModalOpen = false;
+    public $answerCandidateName = '';
+    public $candidateAnswers = [];
+    public $candidateDocuments = [];
+    public $reviewTab = 'documents';
 
     public function createCandidate()
     {
@@ -76,6 +85,54 @@ class CandidateManager extends Component
     public function closeEditModal()
     {
         $this->isEditModalOpen = false;
+    }
+
+    public function viewAnswers($candidateId)
+    {
+        $application = JobApplication::where('user_id', $candidateId)->latest()->first();
+        if (!$application) {
+            return;
+        }
+
+        $this->answerCandidateName = User::find($candidateId)?->name ?? 'Candidate';
+        $this->candidateDocuments = $application->documents->map(fn ($document) => [
+            'type' => $document->document_type,
+            'name' => $document->file_name,
+            'url' => url('storage/' . ltrim($document->file_path, '/')),
+        ])->all();
+        $this->candidateAnswers = JobApplicationAnswer::with('question')
+            ->where('job_application_id', $application->id)
+            ->get()
+            ->map(fn ($answer) => [
+                'phase' => $answer->question?->phase,
+                'question' => $answer->question?->question_text,
+                'answer' => $answer->answer_text,
+            ])
+            ->all();
+        $this->reviewTab = 'documents';
+        $this->isAnswerModalOpen = true;
+    }
+
+    public function closeAnswerModal()
+    {
+        $this->isAnswerModalOpen = false;
+        $this->candidateAnswers = [];
+        $this->candidateDocuments = [];
+    }
+
+    public function updateApplicationStatus($candidateId, $status)
+    {
+        if (!in_array($status, ['applied', 'screening', 'interview', 'selected', 'joined', 'rejected'], true)) {
+            return;
+        }
+
+        $application = JobApplication::where('user_id', $candidateId)->latest()->first();
+        if (!$application) {
+            return;
+        }
+
+        $application->update(['status' => $status]);
+        $this->successMessage = 'Candidate application status updated successfully.';
     }
 
     public function updateCandidate()
@@ -152,10 +209,10 @@ class CandidateManager extends Component
             });
         }
 
-        return view('livewire.ats.candidate-manager', [
-            'candidates' => $query->get(),
-            'openJobs' => JobPosting::with(['department', 'designation'])->where('status', 'open')->get(),
-            'departments' => \App\Models\Department::all(),
-        ]);
+        $this->candidates = $query->get();
+        $this->openJobs = JobPosting::with(['department', 'designation'])->where('status', 'open')->get();
+        $this->departments = \App\Models\Department::all();
+
+        return view('livewire.ats.candidate-manager');
     }
 }
